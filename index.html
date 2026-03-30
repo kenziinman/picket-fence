@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Picket Fence Media — Stories That Feel Like Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #FDFCFA;
+      --cream: #F5F0E8;
+      --sage: #7A8B6F;
+      --sage-dark: #5C6B52;
+      --charcoal: #2C2C2C;
+      --warm-gray: #6B6560;
+      --accent: #C4843E;
+      --accent-light: #E8A85C;
+      --fence: #D4C5A9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--charcoal);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(253,252,250,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem; color: var(--charcoal);
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--sage);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 0.85rem; font-weight: 700;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--warm-gray);
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--charcoal); }
+    .btn {
+      display: inline-block; padding: 0.7rem 1.6rem;
+      background: var(--sage); color: white;
+      border: none; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn:hover { background: var(--sage-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(122,139,111,0.3); }
+    .btn-outline {
+      background: transparent; color: var(--sage);
+      border: 2px solid var(--sage);
+    }
+    .btn-outline:hover { background: var(--sage); color: white; }
+    .btn-accent { background: var(--accent); }
+    .btn-accent:hover { background: #b3762f; box-shadow: 0 4px 12px rgba(196,132,62,0.3); }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -50%; right: -20%;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(122,139,111,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -30%; left: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(196,132,62,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-content { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; align-items: center; gap: 4rem; position: relative; z-index: 1; }
+    .hero-text { flex: 1; }
+    .hero-badge {
+      display: inline-block; padding: 0.4rem 1rem;
+      background: var(--cream); border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600; color: var(--sage);
+      margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .hero h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero h1 span { color: var(--sage); }
+    .hero p { font-size: 1.15rem; color: var(--warm-gray); max-width: 500px; margin-bottom: 2rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-visual { flex: 1; display: flex; justify-content: center; }
+    .hero-graphic {
+      width: 420px; height: 420px; position: relative;
+    }
+    .fence-visual {
+      display: flex; align-items: flex-end; justify-content: center; gap: 6px;
+      height: 100%; padding-bottom: 60px;
+    }
+    .fence-picket {
+      width: 28px; background: var(--fence); border-radius: 4px 4px 0 0;
+      position: relative;
+      animation: growUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+    .fence-picket::before {
+      content: '';
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-bottom: 14px solid var(--fence);
+    }
+    @keyframes growUp {
+      from { height: 0; opacity: 0; }
+      to { opacity: 1; }
+    }
+    .fence-picket:nth-child(1) { animation-delay: 0.1s; --h: 140px; }
+    .fence-picket:nth-child(2) { animation-delay: 0.2s; --h: 160px; }
+    .fence-picket:nth-child(3) { animation-delay: 0.3s; --h: 180px; }
+    .fence-picket:nth-child(4) { animation-delay: 0.4s; --h: 200px; }
+    .fence-picket:nth-child(5) { animation-delay: 0.5s; --h: 190px; }
+    .fence-picket:nth-child(6) { animation-delay: 0.6s; --h: 170px; }
+    .fence-picket:nth-child(7) { animation-delay: 0.7s; --h: 150px; }
+    .fence-picket:nth-child(8) { animation-delay: 0.8s; --h: 130px; }
+    .fence-picket { height: var(--h); }
+    .fence-rail {
+      position: absolute; left: 0; right: 0;
+      height: 12px; background: var(--fence);
+      border-radius: 3px;
+    }
+    .fence-rail.top { bottom: 180px; }
+    .fence-rail.bottom { bottom: 120px; }
+    .floating-tag {
+      position: absolute; padding: 0.6rem 1.2rem;
+      background: white; border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      font-size: 0.85rem; font-weight: 600;
+      animation: float 3s ease-in-out infinite;
+    }
+    .floating-tag.t1 { top: 40px; right: 20px; color: var(--sage); animation-delay: 0s; }
+    .floating-tag.t2 { top: 120px; left: 10px; color: var(--accent); animation-delay: 1s; }
+    .floating-tag.t3 { bottom: 100px; right: 30px; color: var(--sage-dark); animation-delay: 2s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ---- STATS BAR ---- */
+    .stats-bar {
+      background: var(--charcoal); color: white;
+      padding: 3rem;
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--accent-light); }
+    .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem; }
+
+    /* ---- SECTIONS ---- */
+    section { padding: 6rem 3rem; }
+    .section-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
+    .section-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .section-header p { color: var(--warm-gray); font-size: 1.05rem; }
+
+    /* ---- SERVICES ---- */
+    .services-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+    }
+    .service-card {
+      background: var(--cream); border-radius: 16px;
+      padding: 2.5rem; transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sage);
+      box-shadow: 0 12px 40px rgba(122,139,111,0.1);
+    }
+    .service-icon {
+      width: 56px; height: 56px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .service-card h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+    .service-card p { color: var(--warm-gray); font-size: 0.95rem; }
+    .si-brand { background: rgba(122,139,111,0.15); }
+    .si-content { background: rgba(196,132,62,0.15); }
+    .si-social { background: rgba(44,44,44,0.1); }
+    .si-web { background: rgba(122,139,111,0.15); }
+    .si-seo { background: rgba(196,132,62,0.15); }
+    .si-pr { background: rgba(44,44,44,0.1); }
+
+    /* ---- ABOUT ---- */
+    #about { background: var(--cream); }
+    .about-content {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 4rem; align-items: center;
+    }
+    .about-img {
+      flex: 1; aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      border-radius: 24px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-family: 'DM Serif Display', serif;
+      font-size: 3rem; min-height: 350px;
+    }
+    .about-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .about-text { flex: 1; }
+    .about-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+    .about-text p { color: var(--warm-gray); margin-bottom: 1rem; font-size: 1.05rem; }
+    .values-list { list-style: none; margin-top: 1.5rem; }
+    .values-list li {
+      padding: 0.5rem 0; padding-left: 1.5rem;
+      position: relative; font-weight: 500;
+    }
+    .values-list li::before {
+      content: ''; position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 8px; height: 8px; background: var(--sage);
+      border-radius: 50%;
+    }
+
+    /* ---- WORK / PORTFOLIO ---- */
+    .work-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem;
+    }
+    .work-card {
+      border-radius: 16px; overflow: hidden;
+      background: white; border: 1px solid rgba(0,0,0,0.06);
+      transition: all 0.3s;
+    }
+    .work-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .work-thumb {
+      height: 220px; display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: white;
+    }
+    .wt-1 { background: linear-gradient(135deg, #7A8B6F, #5C6B52); }
+    .wt-2 { background: linear-gradient(135deg, #C4843E, #9E6A30); }
+    .wt-3 { background: linear-gradient(135deg, #2C2C2C, #4a4a4a); }
+    .work-info { padding: 1.5rem; }
+    .work-tag {
+      display: inline-block; padding: 0.25rem 0.75rem;
+      background: var(--cream); border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600; color: var(--sage);
+      margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .work-info h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .work-info p { color: var(--warm-gray); font-size: 0.9rem; }
+
+    /* ---- TESTIMONIALS ---- */
+    #testimonials { background: var(--charcoal); color: white; }
+    #testimonials .section-header p { color: rgba(255,255,255,0.5); }
+    #testimonials .section-header h2 { color: white; }
+    .testimonials-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 2rem;
+    }
+    .stars { color: var(--accent-light); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testimonial-card p { color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .author-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--sage); display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; color: white;
+    }
+    .author-name { font-weight: 600; font-size: 0.9rem; }
+    .author-role { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+    /* ---- PRICING ---- */
+    .pricing-grid {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
+    }
+    .pricing-card {
+      background: white; border: 2px solid rgba(0,0,0,0.06);
+      border-radius: 16px; padding: 2.5rem; text-align: center;
+      transition: all 0.3s; position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--sage);
+      box-shadow: 0 12px 40px rgba(122,139,111,0.15);
+      transform: scale(1.03);
+    }
+    .pricing-card.featured::before {
+      content: 'MOST POPULAR';
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--sage); color: white;
+      padding: 0.3rem 1rem; border-radius: 50px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    }
+    .pricing-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .pricing-card .price {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3rem; margin: 1rem 0 0.25rem;
+    }
+    .pricing-card .price span { font-size: 1rem; color: var(--warm-gray); }
+    .pricing-card .period { color: var(--warm-gray); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; }
+    .pricing-features li {
+      padding: 0.5rem 0; font-size: 0.9rem; color: var(--warm-gray);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .pricing-features li::before { content: '\2713'; color: var(--sage); font-weight: 700; }
+    .pricing-card .btn { width: 100%; text-align: center; }
+
+    /* ---- CTA ---- */
+    .cta {
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);
+      color: white; text-align: center; padding: 6rem 3rem;
+    }
+    .cta h2 { font-size: 2.8rem; margin-bottom: 1rem; }
+    .cta p { font-size: 1.1rem; opacity: 0.85; max-width: 500px; margin: 0 auto 2rem; }
+    .cta .btn { background: white; color: var(--sage-dark); font-weight: 700; }
+    .cta .btn:hover { background: var(--cream); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      background: var(--charcoal); color: rgba(255,255,255,0.5);
+      padding: 4rem 3rem 2rem;
+    }
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo { color: white; margin-bottom: 1rem; }
+    .footer-brand .logo-icon { background: var(--sage); }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.6; }
+    footer h4 { color: white; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: 0.5rem; }
+    footer ul a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    footer ul a:hover { color: white; }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.8rem;
+    }
+
+    /* ---- MOBILE NAV ---- */
+    .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .mobile-toggle span { display: block; width: 22px; height: 2px; background: var(--charcoal); margin: 5px 0; transition: 0.3s; }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .mobile-toggle { display: block; }
+      .hero { padding: 7rem 1.5rem 3rem; }
+      .hero-content { flex-direction: column; text-align: center; gap: 2rem; }
+      .hero h1 { font-size: 2.5rem; }
+      .hero p { margin: 0 auto 2rem; }
+      .hero-buttons { justify-content: center; }
+      .hero-graphic { width: 280px; height: 280px; }
+      .about-content { flex-direction: column; gap: 2rem; }
+      .about-img { min-height: 250px; }
+      section { padding: 4rem 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .pricing-card.featured { transform: scale(1); }
+    }
+    @media (max-width: 500px) {
+      .hero h1 { font-size: 2rem; }
+      .section-header h2 { font-size: 2rem; }
+      .stats-inner { flex-direction: column; gap: 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---- SCROLL ANIMATIONS ---- */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo">
+      <div class="logo-icon">PF</div>
+      Picket Fence Media
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact" class="btn">Get Started</a>
+    </div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">Full-Service Creative Agency</div>
+        <h1>Stories that feel like <span>home.</span></h1>
+        <p>We help brands build authentic connections through warm, human storytelling &mdash; the kind that makes people stop scrolling and start caring.</p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-accent">Start Your Project</a>
+          <a href="#work" class="btn btn-outline">See Our Work</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-graphic">
+          <div class="fence-visual">
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+            <div class="fence-picket"></div>
+          </div>
+          <div class="floating-tag t1">Brand Strategy</div>
+          <div class="floating-tag t2">Content</div>
+          <div class="floating-tag t3">Growth</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat"><div class="stat-num">150+</div><div class="stat-label">Brands Served</div></div>
+      <div class="stat"><div class="stat-num">12M</div><div class="stat-label">Impressions/Month</div></div>
+      <div class="stat"><div class="stat-num">3.2x</div><div class="stat-label">Avg. ROI Increase</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Client Retention</div></div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-header reveal">
+      <h2>What We Do</h2>
+      <p>From first impression to loyal fanbase, we craft every touchpoint with intention and warmth.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon si-brand">&#127912;</div>
+        <h3>Brand Identity</h3>
+        <p>Logos, color systems, typography, and brand books that capture who you really are &mdash; not just what you sell.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon si-content">&#9997;&#65039;</div>
+        <h3>Content Strategy</h3>
+        <p>Editorial calendars, blog series, email campaigns, and long-form storytelling that builds trust over time.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon si-social">&#128241;</div>
+        <h3>Social Media</h3>
+        <p>Community-first social management across every platform. We turn followers into neighbors.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon si-web">&#128187;</div>
+        <h3>Web Design</h3>
+        <p>Fast, beautiful, conversion-friendly websites that feel like walking through your front door.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon si-seo">&#128200;</div>
+        <h3>SEO & Analytics</h3>
+        <p>Data-driven strategies that get you found by the right people &mdash; and keep them coming back.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon si-pr">&#128227;</div>
+        <h3>PR & Outreach</h3>
+        <p>Earned media placements, influencer partnerships, and press strategies that amplify your voice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-content">
+      <div class="about-img reveal">PF</div>
+      <div class="about-text reveal">
+        <h2>Built on the belief that every brand has a story worth telling.</h2>
+        <p>Picket Fence Media started in 2019 in a garage in Louisville, Kentucky &mdash; two friends, a shared laptop, and a stubborn belief that marketing doesn't have to feel like marketing.</p>
+        <p>Today we're a team of 28 creatives, strategists, and data nerds spread across the Midwest, still obsessed with the same thing: making brands feel less like corporations and more like neighbors you'd actually want to borrow a cup of sugar from.</p>
+        <ul class="values-list">
+          <li>Authenticity over algorithms</li>
+          <li>Community-first thinking</li>
+          <li>Data-informed, never data-obsessed</li>
+          <li>No jargon, ever</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="section-header reveal">
+      <h2>Featured Work</h2>
+      <p>A few of the brands we've had the pleasure of helping find their voice.</p>
+    </div>
+    <div class="work-grid">
+      <div class="work-card reveal">
+        <div class="work-thumb wt-1">Clover & Co.</div>
+        <div class="work-info">
+          <span class="work-tag">Brand + Web</span>
+          <h3>Clover & Co. Botanicals</h3>
+          <p>Full rebrand and e-commerce site for an indie plant shop that saw 240% revenue growth in 6 months.</p>
+        </div>
+      </div>
+      <div class="work-card reveal">
+        <div class="work-thumb wt-2">Heartland</div>
+        <div class="work-info">
+          <span class="work-tag">Content Strategy</span>
+          <h3>Heartland Kitchen Co.</h3>
+          <p>A content engine that turned a regional cookware brand into a nationally recognized name in 12 months.</p>
+        </div>
+      </div>
+      <div class="work-card reveal">
+        <div class="work-thumb wt-3">Drift</div>
+        <div class="work-info">
+          <span class="work-tag">Social + PR</span>
+          <h3>Drift Coffee Roasters</h3>
+          <p>From 800 to 45K followers with a social-first strategy built on real stories from their farmers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="section-header reveal">
+      <h2>What Clients Say</h2>
+      <p>Don't take our word for it &mdash; take theirs.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"They made our brand feel like us for the first time. Every email, every post, every page &mdash; it all finally clicked."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">JR</div>
+          <div><div class="author-name">Jamie Reeves</div><div class="author-role">Founder, Clover & Co.</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Picket Fence doesn't just do marketing &mdash; they become part of your team. Best agency decision we've ever made."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">MS</div>
+          <div><div class="author-name">Marcus Sullivan</div><div class="author-role">CMO, Heartland Kitchen</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Our social went from crickets to community. They understood our voice before we even knew how to describe it."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">KT</div>
+          <div><div class="author-name">Keiko Tanaka</div><div class="author-role">Owner, Drift Coffee</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="section-header reveal">
+      <h2>Simple Pricing</h2>
+      <p>No hidden fees. No 47-page contracts. Just clear, honest plans.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <h3>Starter</h3>
+        <div class="price">$2,500<span>/mo</span></div>
+        <div class="period">Perfect for small businesses</div>
+        <ul class="pricing-features">
+          <li>Brand strategy session</li>
+          <li>Social media management (2 platforms)</li>
+          <li>4 blog posts/month</li>
+          <li>Monthly analytics report</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline">Get Started</a>
+      </div>
+      <div class="pricing-card featured reveal">
+        <h3>Growth</h3>
+        <div class="price">$5,500<span>/mo</span></div>
+        <div class="period">For brands ready to scale</div>
+        <ul class="pricing-features">
+          <li>Everything in Starter</li>
+          <li>Full content strategy</li>
+          <li>Social media (4 platforms)</li>
+          <li>SEO optimization</li>
+          <li>Bi-weekly strategy calls</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <a href="#contact" class="btn btn-accent">Get Started</a>
+      </div>
+      <div class="pricing-card reveal">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <div class="period">Full-service partnership</div>
+        <ul class="pricing-features">
+          <li>Everything in Growth</li>
+          <li>PR & media outreach</li>
+          <li>Web design & development</li>
+          <li>Video production</li>
+          <li>24/7 priority support</li>
+          <li>Quarterly brand audits</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <h2 class="reveal">Let's build something<br>worth talking about.</h2>
+    <p class="reveal">Drop us a line and we'll get back to you within 24 hours. No sales pitch &mdash; just a real conversation about your brand.</p>
+    <a href="mailto:hello@picketfencemedia.com" class="btn reveal">hello@picketfencemedia.com</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-icon">PF</div>
+          Picket Fence Media
+        </a>
+        <p>Stories that feel like home.<br>Louisville, KY &bull; Est. 2019</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Branding</a></li>
+          <li><a href="#services">Content</a></li>
+          <li><a href="#services">Social</a></li>
+          <li><a href="#services">Web Design</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Dribbble</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Picket Fence Media. All rights reserved.</span>
+      <span>Made with care in Louisville, KY</span>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector('.nav-links').classList.remove('show');
+      });
+    });
+  </script>
+
+</body>
+</html>
